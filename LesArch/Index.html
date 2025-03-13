@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archaeological Sites Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #0077cc;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #map {
+            flex-grow: 1;
+        }
+        footer {
+            background-color: #0077cc;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>Archaeological Sites Interactive Map</header>
+    <div id="map"></div>
+    <footer>&copy; 2025 Archaeological Research Project</footer>
+
+    <script>
+        // Initialize map
+        var map = L.map('map').setView([44.056, 4.535], 7); // Adjust coordinates as needed
+
+        // Load map tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Function to create custom pop-ups
+        function createPopupContent(site) {
+            return `
+                <div style="width: 250px; text-align: center; font-family: Arial, sans-serif;">
+                    <img src="${site.image}" alt="${site.name}" style="width: 100%; height: auto; border-radius: 5px;"/>
+                    <h3 style="margin: 10px 0; font-size: 16px; font-weight: bold;">${site.name} 
+                        <a href="${site.link}" target="_blank" style="text-decoration: none; color: #0077cc;">🔗</a>
+                    </h3>
+                    <p style="font-size: 14px; color: #333;">${site.description}</p>
+                </div>
+            `;
+        }
+
+        // Archaeological sites data
+        let archaeologicalSites = [
+    {
+        name: "Le Pont du Gard",
+        description: "An ancient Roman aqueduct bridge built in the 1st century AD.",
+        image: "C:/Users/User/LesArch/images/C0523893-Pont_du_Gard_aqueduct,_France.jpg", // Update with actual image path
+        link: "C:/Users/User/LesArch/pont-du-gard.html", // This now links to the new page
+        coordinates: [43.9475, 4.5353]
+    }
+];
+
+        // Add markers with pop-ups
+        archaeologicalSites.forEach(site => {
+            let marker = L.marker(site.coordinates).addTo(map);
+            marker.bindPopup(createPopupContent(site));
+        });
+
+    </script>
+
+</body>
+</html>
